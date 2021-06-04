@@ -33,27 +33,27 @@
       </div>
     </header>
 
-    <div class="display">39</div>
+    <div class="display">0</div>
 
     <main class="key-pad">
-      <button class="keys primary-key numeric-key" id="7" value="7">7</button>
-      <button class="keys primary-key numeric-key" id="8" value="8">8</button>
-      <button class="keys primary-key numeric-key" id="9" value="9">9</button>
-      <button class="keys secondary-key" id="del">DEL</button>
-      <button class="keys primary-key numeric-key" id="4" value4>4</button>
-      <button class="keys primary-key numeric-key" id="5" value="5">5</button>
-      <button class="keys primary-key numeric-key" id="6" value="6">6</button>
-      <button class="keys primary-key" id="add">+</button>
-      <button class="keys primary-key numeric-key" id="1" value="1">1</button>
-      <button class="keys primary-key numeric-key" id="2" value="2">2</button>
-      <button class="keys primary-key numeric-key" id="3" value="3">3</button>
-      <button class="keys primary-key" id="sub">-</button>
-      <button class="keys primary-key" id="point" value=".">.</button>
-      <button class="keys primary-key numeric-key" id="0" value="0">0</button>
-      <button class="keys primary-key" id="divide">/</button>
-      <button class="keys primary-key" id="multiply">x</button>
-      <button class="keys secondary-key grey-key" id="reset">RESET</button>
-      <button class="keys special-key red-key" id="equal-to">=</button>
+      <button class="keys primary-key numeric-key" id="7" tabindex="-1" onkeypress="return event.keyCode != 13;">7</button>
+      <button class="keys primary-key numeric-key" id="8" tabindex="-1" onkeypress="return event.keyCode != 13;">8</button>
+      <button class="keys primary-key numeric-key" id="9" tabindex="-1" onkeypress="return event.keyCode != 13;">9</button>
+      <button class="keys secondary-key" id="Backspace" tabindex="-1" onkeypress="return event.keyCode != 13;">DEL</button>
+      <button class="keys primary-key numeric-key" id="4" tabindex="-1" onkeypress="return event.keyCode != 13;">4</button>
+      <button class="keys primary-key numeric-key" id="5" tabindex="-1" onkeypress="return event.keyCode != 13;">5</button>
+      <button class="keys primary-key numeric-key" id="6" tabindex="-1" onkeypress="return event.keyCode != 13;">6</button>
+      <button class="keys primary-key" id="+" tabindex="-1" onkeypress="return event.keyCode != 13;">+</button>
+      <button class="keys primary-key numeric-key" id="1" tabindex="-1" onkeypress="return event.keyCode != 13;">1</button>
+      <button class="keys primary-key numeric-key" id="2" tabindex="-1" onkeypress="return event.keyCode != 13;">2</button>
+      <button class="keys primary-key numeric-key" id="3" tabindex="-1" onkeypress="return event.keyCode != 13;">3</button>
+      <button class="keys primary-key" id="-" tabindex="-1" onkeypress="return event.keyCode != 13;">-</button>
+      <button class="keys primary-key" id="." tabindex="-1" onkeypress="return event.keyCode != 13;">.</button>
+      <button class="keys primary-key numeric-key" id="0" tabindex="-1" onkeypress="return event.keyCode != 13;">0</button>
+      <button class="keys primary-key" id="/" tabindex="-1" onkeypress="return event.keyCode != 13;">/</button>
+      <button class="keys primary-key" id="*" tabindex="-1" onkeypress="return event.keyCode != 13;">x</button>
+      <button class="keys secondary-key grey-key" id="Reset" tabindex="-1" onkeypress="return event.keyCode != 13;">RESET</button>
+      <button class="keys special-key red-key" id="Enter" tabindex="-1">=</button>
     </main>
   </section>
 
@@ -65,6 +65,7 @@
   <!-- jQuery -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
   <script src="js/theme-changer.js"></script>
+  <script src="js/calculator.js"></script>
 
 </body>
 
