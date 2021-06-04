@@ -267,7 +267,6 @@ function isNotFloat(num) {
 //     }
 // }
 
-
 function deleteNum() {
     //before deleting anything 2 _ (where prev = 2 & number = 0 (by default), _ deleted (operator))
     if(tempPrevNum && prevNumber) {
