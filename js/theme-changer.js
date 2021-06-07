@@ -11,7 +11,7 @@ $(document).keypress((e) => {
 });
 
 $('.theme-btns').click(function(){
-    changeBodyClass($(this).attr('name'));
+    changeBodyClass($(this).attr('id'));
 });
 
 function changeBodyClass(newClass) {

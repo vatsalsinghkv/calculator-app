@@ -184,10 +184,10 @@ header {
     justify-content: space-between;
 }
 
-section {
-        min-width: 100px;
-        max-width: 393px;
-        width: 100%;
+main {
+    min-width: 100px;
+    max-width: 393px;
+    width: 100%;
 }
 
 .display {
@@ -313,8 +313,6 @@ section {
     background-color: var(--special-key);
     box-shadow: 0px 3px var(--special-key-shadow);
 }
-
-/* Keys */
 
 .attribution {
     font-size: 11px;
