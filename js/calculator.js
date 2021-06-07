@@ -115,46 +115,26 @@ function performOperation() {
             case '+':
                 strToNumber();
                 number = prevNumber + number;
-                if(isNotFloat(number)) {
-                    printNum(number);
-                } else {
-                    number = number.toPrecision(4);
-                    printNum(number);
-                }
+                printNum(number);
                 break;
                 
             case '-':
                 strToNumber();
                 number = prevNumber - number;
-                if(isNotFloat(number)) {
-                    printNum(number);
-                } else {
-                    number = number.toPrecision(4);
-                    printNum(number);
-                }
+                printNum(number);
                 break;
                 
             case '×':
                 strToNumber();
                 number = prevNumber * number;
-                if(isNotFloat(number)) {
-                    printNum(number);
-                } else {
-                    number = number.toPrecision(4);
-                    printNum(number);
-                }
+                printNum(number);
                 break;
                 
             case '/':
                 strToNumber();
                 if(number !== 0) {
                     number = prevNumber / number;
-                    if(isNotFloat(number)) {
-                        printNum(number);
-                    } else {
-                        number = number.toPrecision(4);
-                        printNum(number);
-                    }
+                    printNum(number);
                 } else {
                     alert("Cannot be divided by 0");
                     printNum(0);
