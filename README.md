@@ -188,7 +188,7 @@ JS Regular Expressipns
 ## Acknowledgments
 
 - [David Sánchez](https://www.frontendmentor.io/profile/d4vsanchez) - He helped me fix the issue that I couldn't fix even using [Stackoverflow](https://stackoverflow.com/).
-- [Got number fromat (commas in number) from hre](http://www.mredkj.com/javascript/nfbasic.html)
+- [Got number fromat (commas in number) from here](http://www.mredkj.com/javascript/nfbasic.html)
 - [Answer-1: Fix overflow in Flex](https://stackoverflow.com/a/37515194/14076424) -  This answer resolved my overflow issue in display (calculator). Life-Saver.
 - [Answer-2: Capture Backspace in JS](https://stackoverflow.com/a/4843500/14076424) - This helped me in capturing 'Backspace' in JavaScript.
 - [Answer-3: Disable tab focus](https://stackoverflow.com/a/20098852/14076424) - This helped me avoiding tab focus on keys
