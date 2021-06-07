@@ -101,70 +101,72 @@ function checkSpecialKeys(keyValue) {
 }
 
 function performOperation() {
-    if(tempPrevNum) {
-        number = Number(`${prevNumber}${operator}${number}`);
-        operator = prevOperator;
-        prevNumber = tempPrevNum;
-
-        tempPrevNum = '';
-        prevOperator = '';
-    }
+    if(number || prevNumber) {
+        if(tempPrevNum) {
+            number = Number(`${prevNumber}${operator}${number}`);
+            operator = prevOperator;
+            prevNumber = tempPrevNum;
     
-    switch(operator) {
-        case '+':
-            strToNumber();
-            number = prevNumber + number;
-            if(isNotFloat(number)) {
-                printNum(number);
-            } else {
-                number = number.toPrecision(4);
-                printNum(number);
-            }
-            break;
-            
-        case '-':
-            strToNumber();
-            number = prevNumber - number;
-            if(isNotFloat(number)) {
-                printNum(number);
-            } else {
-                number = number.toPrecision(4);
-                printNum(number);
-            }
-            break;
-            
-        case '×':
-            strToNumber();
-            number = prevNumber * number;
-            if(isNotFloat(number)) {
-                printNum(number);
-            } else {
-                number = number.toPrecision(4);
-                printNum(number);
-            }
-            break;
-            
-        case '/':
-            strToNumber();
-            if(number !== 0) {
-                number = prevNumber / number;
+            tempPrevNum = '';
+            prevOperator = '';
+        }
+        
+        switch(operator) {
+            case '+':
+                strToNumber();
+                number = prevNumber + number;
                 if(isNotFloat(number)) {
                     printNum(number);
                 } else {
                     number = number.toPrecision(4);
                     printNum(number);
                 }
-            } else {
-                alert("Cannot be divided by 0");
-                printNum(0);
-            }
-            break;
+                break;
                 
-        case '.':
-            number = Number(`${prevNumber}${operator}${number}`);
-            break;
+            case '-':
+                strToNumber();
+                number = prevNumber - number;
+                if(isNotFloat(number)) {
+                    printNum(number);
+                } else {
+                    number = number.toPrecision(4);
+                    printNum(number);
+                }
+                break;
+                
+            case '×':
+                strToNumber();
+                number = prevNumber * number;
+                if(isNotFloat(number)) {
+                    printNum(number);
+                } else {
+                    number = number.toPrecision(4);
+                    printNum(number);
+                }
+                break;
+                
+            case '/':
+                strToNumber();
+                if(number !== 0) {
+                    number = prevNumber / number;
+                    if(isNotFloat(number)) {
+                        printNum(number);
+                    } else {
+                        number = number.toPrecision(4);
+                        printNum(number);
+                    }
+                } else {
+                    alert("Cannot be divided by 0");
+                    printNum(0);
+                }
+                break;
+                    
+            case '.':
+                number = Number(`${prevNumber}${operator}${number}`);
+                break;
+        }
+        clearCache();
     }
-    clearCache();
 }
 
 // FORMATTING FUNCTIONS
