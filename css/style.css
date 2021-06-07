@@ -114,7 +114,6 @@
     }
 }
 
-
 /* GLOBAL */
 
 html {
@@ -166,8 +165,8 @@ header, main, .keys, .theme-btn-container, .display {
     user-select: none;
 }
 
-.keys::selection {
-    background: transparent;
+.keys{
+    -webkit-tap-highlight-color: transparent;
 }
 
 .theme-btn-container {
@@ -207,7 +206,7 @@ main {
     background-color: var(--display-bg);
 
     white-space: nowrap;
-    overflow-x: scroll;
+    overflow-x: auto;
     user-select: all;
 }
 
