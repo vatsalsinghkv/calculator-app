@@ -1,8 +1,8 @@
 'use strict'
 
-let number = 0;
-let prevNumber = 0;
-let tempPrevNum = 0;
+let number = '';
+let prevNumber = '';
+let tempPrevNum = '';
 let prevOperator = '';
 let operator = '';
 
@@ -54,7 +54,7 @@ function checkSpecialKeys(keyValue) {
                 break;
 
             case 'Reset':
-                number = 0;
+                number = '';
                 clearCache();
                 printNum(number);
                 break;
@@ -106,48 +106,52 @@ function performOperation() {
         operator = prevOperator;
         prevNumber = tempPrevNum;
 
-        tempPrevNum = null;
+        tempPrevNum = '';
         prevOperator = '';
     }
     
     switch(operator) {
         case '+':
+            strToNumber();
             number = prevNumber + number;
             if(isNotFloat(number)) {
                 printNum(number);
             } else {
-                number = number.toPrecision(5);
+                number = number.toPrecision(4);
                 printNum(number);
             }
             break;
-
+            
         case '-':
+            strToNumber();
             number = prevNumber - number;
             if(isNotFloat(number)) {
                 printNum(number);
             } else {
-                number = number.toPrecision(5);
+                number = number.toPrecision(4);
                 printNum(number);
             }
             break;
-
+            
         case '×':
+            strToNumber();
             number = prevNumber * number;
             if(isNotFloat(number)) {
                 printNum(number);
             } else {
-                number = number.toPrecision(5);
+                number = number.toPrecision(4);
                 printNum(number);
             }
             break;
-
+            
         case '/':
+            strToNumber();
             if(number !== 0) {
                 number = prevNumber / number;
                 if(isNotFloat(number)) {
                     printNum(number);
                 } else {
-                    number = number.toPrecision(5);
+                    number = number.toPrecision(4);
                     printNum(number);
                 }
             } else {
@@ -155,7 +159,7 @@ function performOperation() {
                 printNum(0);
             }
             break;
-
+                
         case '.':
             number = Number(`${prevNumber}${operator}${number}`);
             break;
@@ -165,18 +169,7 @@ function performOperation() {
 
 // FORMATTING FUNCTIONS
 function updateNumber(num) {
-    number = (number * 10) + Number(num);
-
-    /*if(number == 0 && operator === '.') {
-        if(num == 0) {
-            numberStr += num;
-            number = `${numberStr}`;
-        } else {
-            number = Number(`${prevNumber}${operator}${numberStr}${num}`);
-            operator = '';
-            numberStr = '';
-        }
-    } */
+    number += num;
     
     if(tempPrevNum) {
         printNum(`${tempPrevNum}${prevOperator}${prevNumber}${operator}${number}`);
@@ -188,29 +181,69 @@ function updateNumber(num) {
 }
 
 function printOperation() {
-   if(operator === '.') {
+    if(operator === '.') {
         if(prevNumber) {
             tempPrevNum = prevNumber;
             prevNumber = number;
-            number = 0;
+            number = '';
             printNum(`${tempPrevNum}${prevOperator}${prevNumber}${operator}`);
         } else {
             prevNumber = number;
-            number = 0;
+            number = '';
             printNum(`${prevNumber}${operator}`);
         }
-   } else {
-    prevNumber = number;
-    number = 0;
-    printNum(`${prevNumber}${operator}`);
-   }
+    } else {
+        prevNumber = number;
+        number = '';
+        printNum(`${prevNumber}${operator}`);
+    }
 }
 
 function printNum(num) {
-    if(isNotFloat(number) && isNotFloat(prevNumber && !tempPrevNum)) {
+    if(isNotFloat(number) && isNotFloat(prevNumber) && !tempPrevNum)
         num = numberWithCommas(num);
-    }
     $('.display').text(num);
+}
+
+let flag = true;
+function deleteNum() {
+    numberToStr();
+    if(!number.includes('e')) {
+        if(prevNumber && !number && !tempPrevNum) {
+            number = prevNumber;
+            clearCache();
+            printNum(number);
+        } else {
+            if(flag) number = number.slice(0,-1);
+            else flag = true;
+    
+            if(prevOperator) {
+                if(number) {
+                    printNum(`${tempPrevNum}${prevOperator}${prevNumber}${operator}${number}`);
+                } else {
+                    printNum(`${tempPrevNum}${prevOperator}${prevNumber}${operator}`);
+                    number = prevNumber;
+                    operator = prevOperator;
+                    prevNumber = tempPrevNum;
+                    prevOperator = '';
+                    tempPrevNum = '';
+                    flag = false;
+                }            
+            } else {
+                if(operator)
+                    if(number)
+                        printNum(`${prevNumber}${operator}${number}`);
+                    else
+                        printNum(`${prevNumber}${operator}`); 
+                else 
+                    printNum(number);
+            }
+        }
+    } else {
+        number = '';
+        clearCache();
+        printNum(number);
+    }
 }
 
 // SMALL FUNCTIONS
@@ -230,7 +263,8 @@ function numberWithCommas(nStr) {
 function clearCache() {
     prevOperator = '';
     operator = '';
-    prevNumber = 0;
+    prevNumber = '';
+    tempPrevNum = '';
 }
 
 function animateKey(key) {
@@ -241,43 +275,18 @@ function animateKey(key) {
 }
 
 function isNotFloat(num) {
+    num = Number(num);
     return num === Math.floor(num);
 }
 
-function deleteNum() {
-    //before deleting anything 2 _ (where prev = 2 & number = 0 (by default), _ deleted (operator))
-    if(!isNaN(Number(`${number}`.slice(0, `${number}`.length - 1)))) {
-        if(prevNumber && number === 0) {
-            number = prevNumber;
-            clearCache();
-            printNum(number);
-        } else {
-            //  delete last digit (23 + 3_) where prev = 23 num & number = 3
-            number = Number(`${number}`.slice(0, `${number}`.length - 1));
-    
-            if(prevNumber) {
-                // 2 + _ (num is deleted = 0)
-                if(number === 0) {
-                    printNum(`${prevNumber}${operator}`);
-                } else {
-                    printNum(`${prevNumber}${operator}${number}`);
-                }
-            } else if(prevNumber === 0 && operator === '.') {
-                if(number) {
-                    printNum(`${prevNumber}${operator}${number}`);
-                } else{
-                    clearCache();
-                    printNum(number);
-                }
-            } else if(prevNumber === 0){
-                printNum(number);
-            } else {
-                number = 0;
-                printNum(number);
-            }
-        } 
-    } else {
-        number = 0;
-        printNum(number);
-    }
+function strToNumber() {
+    number = Number(number);
+    prevNumber = Number(prevNumber);
+    tempPrevNum = Number(tempPrevNum);
+}
+
+function numberToStr() {
+    number = String(number);
+    prevNumber = String(prevNumber);
+    tempPrevNum = String(tempPrevNum);
 }
