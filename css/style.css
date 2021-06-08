@@ -164,7 +164,7 @@ header, main, .keys, .theme-btn-container, .display {
     user-select: none;
 }
 
-.keys{
+.keys {
     -webkit-tap-highlight-color: transparent;
 }
 
