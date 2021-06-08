@@ -206,7 +206,7 @@ main {
 
     white-space: nowrap;
     overflow-x: auto;
-    /* user-select: all; */
+    user-select: auto;
 }
 
 .theme-container {
