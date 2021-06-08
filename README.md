@@ -38,16 +38,16 @@ Users should be able to:
 ### Guide
 
 - You can use the calculator using Keyboard (Numeric Keys) as well as by interacting with cursor/touch.
-- 'Backspace' to remove a digit
-- 'Ctrl+Z' to reset
-- 'Shift+1' to change to theme-1
-- 'Shift+2' to change to theme-2
-- 'Shift+3' to change to theme-3
+- `Backspace` to remove a digit
+- `Ctrl+Z` to reset
+- `Shift+1` change to theme-1
+- `Shift+2` change to theme-2
+- `Shift+3` change to theme-3
 
 ### Links
 
-- Solution URL: [Add solution URL here](https://www.frontendmentor.io/solutions/html-csss-grid-and-preferscolorscheme-and-jquery-yW3GdMroq)
-- Live Site URL: [Add live site URL here](https://vatsalsinghkv.github.io/calculator-app)
+- Solution URL: [https://www.frontendmentor.io/solutions/html-csss-grid-and-preferscolorscheme-and-jquery-yW3GdMroq](https://www.frontendmentor.io/solutions/html-csss-grid-and-preferscolorscheme-and-jquery-yW3GdMroq)
+- Live Site URL: [https://vatsalsinghkv.github.io/calculator-app](https://vatsalsinghkv.github.io/calculator-app)
 
 ### Built with
 
@@ -64,7 +64,7 @@ Users should be able to:
 
 I have really learned lot of things from this project.
 
-In HTML, learned about attributes like 'tabindex', also learned about some errors like: 'Attribute name not allowed on element div at this point' & 'he main element must not appear as a descendant of the section element'
+In HTML, learned about attributes like 'tabindex', also learned about some errors like: `Attribute name not allowed on element div at this point` & `The main element must not appear as a descendant of the section element`
 ```html
 <button class="keys primary-key numeric-key" id="5" tabindex="-1" onkeypress="return event.keyCode != 13;">5</button>
 ```
@@ -124,7 +124,7 @@ In CSS, learned about Grid Layour and about Variables, using generalised variabl
     grid-gap: .5rem;
 }
 
-.keys{
+.keys {
     -webkit-tap-highlight-color: transparent;
 }
 ```
@@ -138,11 +138,11 @@ let themes = {
 
 $(document).keypress((e) => {
     if(e.key in themes) {
-        changeBodyClass(themes[e.key]);
+        changeTheme(themes[e.key]);
     }
 });
 
-function changeBodyClass(newClass) {
+function changeTheme(newClass) {
     let oldClass = $('body').attr('class');
     $(`.theme-btn-${getBtnNum(oldClass)}`).removeClass('show');
     $(`.theme-btn-${getBtnNum(newClass)}`).addClass('show');
@@ -151,24 +151,24 @@ function changeBodyClass(newClass) {
 }
 
 function getBtnNum(str) {
-    return str.slice(str.length-1);
+    return str.slice(-1);
 }
 ```
 
 ### Continued development
 
 Stuff I find usefull and want to learn:
-[Bootstrap](https://getbootstrap.com/)
-[Node.js](https://nodejs.org/)
-[Express](https://expressjs.com/)
-[React](https://reactjs.org/)
+- [Bootstrap](https://getbootstrap.com/)
+- [Node.js](https://nodejs.org/)
+- [Express](https://expressjs.com/)
+- [React](https://reactjs.org/)
 
-CSS Grid
-CSS Animations
-CSS Svg
-CSS Canvas
+- CSS Grid
+- CSS Animations
+- CSS Svg
+- CSS Canvas
 
-JS Regular Expressipns
+- JS Regular Expressipns
 
 ### Useful resources
 
@@ -188,7 +188,7 @@ JS Regular Expressipns
 ## Acknowledgments
 
 - [David Sánchez](https://www.frontendmentor.io/profile/d4vsanchez) - He helped me fix the issue that I couldn't fix even using [Stackoverflow](https://stackoverflow.com/).
-- [Got number fromat (commas in number) from here](http://www.mredkj.com/javascript/nfbasic.html)
+- [Number Format](http://www.mredkj.com/javascript/nfbasic.html) - Got number fromat (commas in number) from here.
 - [Answer-1: Fix overflow in Flex](https://stackoverflow.com/a/37515194/14076424) -  This answer resolved my overflow issue in display (calculator). Life-Saver.
 - [Answer-2: Capture Backspace in JS](https://stackoverflow.com/a/4843500/14076424) - This helped me in capturing 'Backspace' in JavaScript.
 - [Answer-3: Disable tab focus](https://stackoverflow.com/a/20098852/14076424) - This helped me avoiding tab focus on keys

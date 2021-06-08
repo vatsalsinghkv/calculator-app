@@ -6,15 +6,15 @@ let themes = {
 
 $(document).keypress((e) => {
     if(e.key in themes) {
-        changeBodyClass(themes[e.key]);
+        changeTheme(themes[e.key]);
     }
 });
 
 $('.theme-btns').click(function(){
-    changeBodyClass($(this).attr('id'));
+    changeTheme($(this).attr('id'));
 });
 
-function changeBodyClass(newClass) {
+function changeTheme(newClass) {
     let oldClass = $('body').attr('class');
 
     // hide theme btns
@@ -27,5 +27,5 @@ function changeBodyClass(newClass) {
 }
 
 function getBtnNum(str) {
-    return str.slice(str.length-1);
+    return str.slice(-1);
 }
