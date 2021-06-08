@@ -40,9 +40,9 @@ Users should be able to:
 - You can use the calculator using Keyboard (Numeric Keys) as well as by interacting with cursor/touch.
 - 'Backspace' to remove a digit
 - 'Ctrl+Z' to reset
-- 'Shift+1' to change to theme-1
-- 'Shift+2' to change to theme-2
-- 'Shift+3' to change to theme-3
+- 'Shift+1' change to theme-1
+- 'Shift+2' change to theme-2
+- 'Shift+3' change to theme-3
 
 ### Links
 
