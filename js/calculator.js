@@ -1,21 +1,17 @@
-'use strict';
+// 'use strict';
+const MAX_DECIMAL_LENGTH = 6;
 
-let number = '';
-let prevNumber = '';
-let tempPrevNum = '';
-let prevOperator = '';
-let operator = '';
+const $display = $('.display');
+const $keypad = $('.key-pad');
 
-const specialKeysValues = [
-  '+',
-  '-',
-  '*',
-  '/',
-  '.',
-  'Enter',
-  'Backspace',
-  'Reset',
-];
+const reservedDigits = ['ERROR', 'INFINITY', 'NAN'];
+
+const specialKeysValues = ['Enter', 'Backspace', 'Reset'];
+const operators = {
+  highPrecedence: ['+', '*', '/'],
+  lowPrecedence: ['-'],
+  all: ['+', '-', '*', '/'],
+};
 
 const validKeys = [
   '0',
@@ -28,232 +24,84 @@ const validKeys = [
   '7',
   '8',
   '9',
+  '.',
   ...specialKeysValues,
+  ...operators.all,
 ];
 
-// EVENT LISTENERS
-$('.key-pad').click((e) => {
-  let keyClicked = e.target;
-  let keyClickedClass = Array.from(keyClicked.classList);
+// * FUNCTIONS
 
-  if (!keyClickedClass.includes('key-pad')) {
-    animateKey(keyClicked);
+const specialKeyHandler = (key) => {
+  switch (key) {
+    case 'Backspace':
+      const prevNum = removeCommas($display.text());
+      if (reservedDigits.includes(prevNum.toUpperCase())) {
+        $display.text('');
+        return;
+      }
+      $display.text(addCommas(prevNum.slice(0, prevNum.length - 1)));
+      break;
 
-    let keyValue = keyClicked.id;
+    case 'Reset':
+      $display.text('');
+      break;
 
-    if (!checkSpecialKeys(keyValue)) {
-      updateNumber(keyValue);
-    }
+    case 'Enter':
+      let num = removeCommas($display.text());
+      try {
+        const lastDigit = num[num.length - 1];
+        if (operators.all.includes(lastDigit)) num = num.slice(0, -1);
+
+        $display.text(addCommas(fixDecimalLength(eval(num))));
+      } catch (e) {
+        console.error(e.message);
+        $display.text('error');
+      }
+      break;
   }
-});
+};
 
-$(document).keypress((e) => {
-  if (validKeys.includes(e.key)) {
-    animateKey(document.getElementById(e.key));
-    if (!checkSpecialKeys(e.key)) {
-      updateNumber(e.key);
-    }
-  }
-});
-
-$(document).keydown((e) => {
-  if (e.key === 'Backspace') {
-    animateKey(document.getElementById(e.key));
-    checkSpecialKeys(e.key);
-  }
-
-  if (e.ctrlKey && e.key === 'z') {
-    checkSpecialKeys('Reset');
-  }
-});
-
-// FUNCTIONS
-function checkSpecialKeys(keyValue) {
-  if (specialKeysValues.includes(keyValue)) {
-    switch (keyValue) {
-      case 'Backspace':
-        deleteNum();
-        break;
-
-      case 'Reset':
-        number = '';
-        clearCache();
-        printNum(number);
-        break;
-
-      case 'Enter':
-        if (operator) performOperation();
-        break;
-
-      case '.':
-        if (operator !== '.' && isNotFloat(number)) {
-          prevOperator = operator;
-          operator = '.';
-          printOperation();
-        }
-        break;
-
-      case '+':
-        if (operator) performOperation();
-        operator = '+';
-        printOperation();
-        break;
-
-      case '-':
-        if (operator) performOperation();
-        operator = '-';
-        printOperation();
-        break;
-
-      case '*':
-        if (operator) performOperation();
-        operator = '×';
-        printOperation();
-        break;
-
-      case '/':
-        if (operator) performOperation();
-        operator = '/';
-        printOperation();
-        break;
-    }
-    return true;
-  }
-  return false;
-}
-
-function performOperation() {
-  if (number || prevNumber) {
-    if (tempPrevNum) {
-      number = Number(`${prevNumber}${operator}${number}`);
-      operator = prevOperator;
-      prevNumber = tempPrevNum;
-
-      tempPrevNum = '';
-      prevOperator = '';
-    }
-
-    switch (operator) {
-      case '+':
-        strToNumber();
-        number = prevNumber + number;
-        printNum(number);
-        break;
-
-      case '-':
-        strToNumber();
-        number = prevNumber - number;
-        printNum(number);
-        break;
-
-      case '×':
-        strToNumber();
-        number = prevNumber * number;
-        printNum(number);
-        break;
-
-      case '/':
-        strToNumber();
-        if (number !== 0) {
-          number = prevNumber / number;
-          printNum(number);
-        } else {
-          alert('Cannot be divided by 0');
-          printNum(0);
-        }
-        break;
-
-      case '.':
-        number = Number(`${prevNumber}${operator}${number}`);
-        break;
-    }
-    clearCache();
-  }
-}
+const fixDecimalLength = (num) => {
+  const noOfDecimals = `${num}`.split('.').length - 1;
+  if (!noOfDecimals) return num;
+  return num.toFixed(MAX_DECIMAL_LENGTH);
+};
 
 // FORMATTING FUNCTIONS
-function updateNumber(num) {
-  number += num;
-
-  if (tempPrevNum) {
-    printNum(`${tempPrevNum}${prevOperator}${prevNumber}${operator}${number}`);
-  } else if (operator) {
-    printNum(`${prevNumber}${operator}${number}`);
-  } else {
-    printNum(number);
+const printNum = (numStr) => {
+  const prevNum = removeCommas($display.text());
+  const lastDigit = prevNum[prevNum.length - 1];
+  // When to skip inserting the digit
+  if (
+    (!lastDigit && operators.highPrecedence.includes(numStr)) ||
+    (operators.all.includes(lastDigit) &&
+      operators.all.includes(numStr) &&
+      lastDigit === numStr)
+  ) {
+    return;
   }
-}
-
-function printOperation() {
-  if (operator === '.') {
-    if (prevNumber) {
-      tempPrevNum = prevNumber;
-      prevNumber = number;
-      number = '';
-      printNum(`${tempPrevNum}${prevOperator}${prevNumber}${operator}`);
-    } else {
-      prevNumber = number;
-      number = '';
-      printNum(`${prevNumber}${operator}`);
-    }
-  } else {
-    prevNumber = number;
-    number = '';
-    printNum(`${prevNumber}${operator}`);
+  // When to replace the operator
+  if (
+    operators.all.includes(lastDigit) &&
+    operators.highPrecedence.includes(numStr)
+  ) {
+    $display.text(`${prevNum.slice(0, -1)}${numStr}`);
+    return;
   }
-}
-
-function printNum(num) {
-  if (isNotFloat(number) && isNotFloat(prevNumber) && !tempPrevNum)
-    num = numberWithCommas(num);
-  $('.display').text(num);
-}
-
-let flag = true;
-function deleteNum() {
-  numberToStr();
-  if (!number.includes('e')) {
-    if (prevNumber && !number && !tempPrevNum) {
-      number = prevNumber;
-      clearCache();
-      printNum(number);
-    } else {
-      if (flag) number = number.slice(0, -1);
-      else flag = true;
-
-      if (prevOperator) {
-        if (number) {
-          printNum(
-            `${tempPrevNum}${prevOperator}${prevNumber}${operator}${number}`
-          );
-        } else {
-          printNum(`${tempPrevNum}${prevOperator}${prevNumber}${operator}`);
-          number = prevNumber;
-          operator = prevOperator;
-          prevNumber = tempPrevNum;
-          prevOperator = '';
-          tempPrevNum = '';
-          flag = false;
-        }
-      } else {
-        if (operator)
-          if (number) printNum(`${prevNumber}${operator}${number}`);
-          else printNum(`${prevNumber}${operator}`);
-        else printNum(number);
-      }
-    }
-  } else {
-    number = '';
-    clearCache();
-    printNum(number);
+  // If you try to add text after INFINITY or NAN or ERROR
+  if (reservedDigits.includes(prevNum.toUpperCase())) {
+    $display.text(numStr);
+    return;
   }
-}
+
+  $display.text(addCommas(prevNum + numStr));
+};
 
 // SMALL FUNCTIONS
 // http://www.mredkj.com/javascript/nfbasic.html
-function numberWithCommas(nStr) {
-  nStr += '';
-  let x = nStr.split('.');
+const addCommas = (numStr) => {
+  numStr += '';
+  let x = numStr.split('.');
   let x1 = x[0];
   let x2 = x.length > 1 ? '.' + x[1] : '';
   let rgx = /(\d+)(\d{3})/;
@@ -261,35 +109,50 @@ function numberWithCommas(nStr) {
     x1 = x1.replace(rgx, '$1' + ',' + '$2');
   }
   return x1 + x2;
-}
+};
 
-function clearCache() {
-  prevOperator = '';
-  operator = '';
-  prevNumber = '';
-  tempPrevNum = '';
-}
+const removeCommas = (numStr) => numStr.replaceAll(',', '');
 
-function animateKey(key) {
+const animateKey = (key) => {
   key.classList.add('pressed');
   setTimeout(() => {
     key.classList.remove('pressed');
   }, 100);
-}
+};
 
-function isNotFloat(num) {
-  num = Number(num);
-  return num === Math.floor(num);
-}
+// * EVENT LISTENERS
 
-function strToNumber() {
-  number = Number(number);
-  prevNumber = Number(prevNumber);
-  tempPrevNum = Number(tempPrevNum);
-}
+$keypad.click((e) => {
+  const keyClicked = e.target;
+  const keyClickedClass = Array.from(keyClicked.classList);
 
-function numberToStr() {
-  number = String(number);
-  prevNumber = String(prevNumber);
-  tempPrevNum = String(tempPrevNum);
-}
+  if (!keyClickedClass.includes('key-pad')) {
+    animateKey(keyClicked);
+
+    const keyValue = keyClicked.id;
+
+    if (specialKeysValues.includes(keyValue)) {
+      specialKeyHandler(keyValue);
+      return;
+    }
+
+    printNum(keyValue);
+  }
+});
+
+$(document).keydown((e) => {
+  if (validKeys.includes(e.key)) {
+    animateKey(document.getElementById(e.key));
+    if (specialKeysValues.includes(e.key)) {
+      specialKeyHandler(e.key);
+      return;
+    }
+
+    printNum(e.key);
+  }
+
+  if (e.ctrlKey && e.key === 'z') {
+    animateKey(document.getElementById('Reset'));
+    specialKeyHandler('Reset');
+  }
+});
