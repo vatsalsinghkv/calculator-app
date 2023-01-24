@@ -48,10 +48,10 @@ const specialKeyHandler = (key) => {
 
     case 'Enter':
       let num = removeCommas($display.text());
+      if (num.length === 0) return;
       try {
         const lastDigit = num[num.length - 1];
         if (operators.all.includes(lastDigit)) num = num.slice(0, -1);
-
         $display.text(addCommas(fixDecimalLength(eval(num))));
       } catch (e) {
         console.error(e.message);
